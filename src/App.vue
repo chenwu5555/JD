@@ -1,14 +1,22 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <!-- 路由占位符 -->
+    <router-view />
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App'
+}
+</script>
 <style lang="scss">
-
-
+html, body{
+  width: 100%;
+  height:100%;
+}
+#app{
+  width: 100%;
+  height:100%;
+}
 </style>
