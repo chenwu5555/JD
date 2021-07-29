@@ -25,7 +25,7 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            prefix-icon="iconfont icon-mima"
+            prefix-icon="iconfont icon-suo"
           />
         </el-form-item>
         <!-- 按钮区域 -->
@@ -69,17 +69,21 @@ export default {
     refsLoginRorm() {
       this.$refs.loginFormRef.resetFields()
     },
-    // 点击登录按钮
+    // 点击登录按钮  validate 对保表单进行验证，通过接受一个回调函数,来进行验证
+    // 如果某一个方法的返回值是promise，可以通过async和await来简化这个promise操作
+    // loginFormRef 表单的一个引用对象
     login() {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.post('login', this.loginForm)
+        // console.log(res) res.meta.status
         if (res.meta.status !== 200) return this.$message.error('登陆失败')
+        // $message element-ui组件的内置方法
         this.$message.success('登陆成功')
         //  1.将登陆成功之后的token，保存到客户端的 sessionStorage 中
         //     1.1 项目中出了登录之外的其他API接口，必须在登陆之后才能访问
         //     1.2 token 只应在当前网站打开期间生效，所以将token保存在 sessionStorage中
-        window.sessionStorage.setItem('token', 'res.data.token')
+        window.sessionStorage.setItem('token', res.data.token)
 
         //  2. 通过编程式导航跳转到后台主页，路由地址是/home
         //     2.1 在vue实例中，你可以通过$router来访问路由实例，所以你可以调用$router.push(路径)来跳转

@@ -1,0 +1,23 @@
+{
+  "id": "2699019",
+  "name": "JD",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "902044",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "7964497",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    }
+  ]
+}

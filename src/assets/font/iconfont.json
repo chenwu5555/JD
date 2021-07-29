@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "392159",
+      "name": "电脑行情",
+      "font_class": "42",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "689264",
+      "name": "立方体 立体 多面体 方块2",
+      "font_class": "lifangtilitiduomiantifangkuai2",
+      "unicode": "e7fb",
+      "unicode_decimal": 59387
+    },
+    {
+      "icon_id": "7683505",
+      "name": "用户",
+      "font_class": "yonghu1",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "7978111",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "14776148",
+      "name": "购物袋",
+      "font_class": "gouwudai",
+      "unicode": "e74f",
+      "unicode_decimal": 59215
+    },
+    {
+      "icon_id": "18883567",
+      "name": "锁",
+      "font_class": "suo",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
       "icon_id": "902044",
       "name": "用户",
       "font_class": "yonghu",
