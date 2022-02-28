@@ -11,7 +11,7 @@ import './assets/font/iconfont.css'
 import axios from 'axios'
 // 配置请求的根路径
 axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
-// axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// axios.defaults.baseURL = "/api"
 
 // 配置$axios拦截器
 // export const $axios = axios.create({ // 这里是配置项
@@ -26,7 +26,9 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
+// 在原型下面挂载一个http的方法,所有组件都可以通过this.$http的方法来使用axios来发送请求
 Vue.prototype.$http = axios
+
 
 // 引入element-ui插件
 import ElementUI from 'element-ui'
@@ -50,6 +52,10 @@ Vue.use(Aside)
 Vue.use(Main)
 
 Vue.config.productionTip = false
+
+// 引入vue-table-with-tree-grid 插件
+import TreeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', TreeTable)
 
 new Vue({
   router,

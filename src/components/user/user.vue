@@ -11,12 +11,14 @@
   <el-row :gutter="20">
     <el-col :span="12">
       <!-- 添加搜索区域 -->
+      <!-- clearable  是否清空 默认为false -->
       <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
         <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
       </el-input>
     </el-col>
     <el-col :span="6">
       <!-- 添加用户按钮 -->
+      <!-- addDialogVisible 控制对话框的显示与隐藏 -->
       <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
     </el-col>
   </el-row>
@@ -43,8 +45,8 @@
         <el-button type="danger" icon="el-icon-delete"  size="mini" @click="removeUserById(scope.row.id)"></el-button>
           <template>
             <!-- 分配角色按钮 -->
-            <el-tooltip  effect="dark" content="分配角色" placement="top-end" :enterable="enterable">
-                <el-button type="warning" icon="el-icon-share" size="mini"></el-button>
+            <el-tooltip  effect="dark" content="分配角色" placement="top-end" :enterable="enterable"  >
+                <el-button type="warning" icon="el-icon-share" size="mini" @click="setRole(scope.row)"></el-button>
           </el-tooltip>
           </template>
       </template>
@@ -100,7 +102,7 @@
   @close="modifyClose"
 >
   <span>
-        <el-form :model="modifyForm" :rules="modifyFormRules" ref="modifyFormRef" label-width="70px" >
+    <el-form :model="modifyForm" :rules="modifyFormRules" ref="modifyFormRef" label-width="70px" >
         <el-form-item label="用户名" >
           <el-input v-model="modifyForm.username" disabled></el-input>
         </el-form-item>
@@ -115,6 +117,34 @@
   <span slot="footer" class="dialog-footer">
     <el-button @click="modifyDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="modifyUser">确 定</el-button>
+  </span>
+</el-dialog>
+<!-- 添加分配角色对话框 -->
+<!-- setRoleDialogVisible  分配角色对话框显示与隐藏 -->
+<el-dialog
+  title="分配角色"
+  :visible.sync="setRoleDialogVisible"
+  width="50%"
+>
+  <div>
+    <p>当前的用户：{{infoRule.username}}</p>
+    <p>当前的角色：{{infoRule.role_name}}</p>
+    <p>分配新角色：
+      <template>
+        <el-select v-model="selectedRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in ruleList"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </template>
+    </p>
+  </div>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="setRoleDialogVisible = false" @close="distributionClose">取 消</el-button>
+    <el-button type="primary" @click="distributionRule">确 定</el-button>
   </span>
 </el-dialog>
 </div>
@@ -150,7 +180,7 @@ export default {
           // 当前的页码数
           pagenum:1,
           // 当前每页显示多少条数据
-          pagesize:2
+          pagesize:5
         },
         // 保存获取到的数组
         userlist:[],
@@ -201,7 +231,15 @@ export default {
               { required: true, message: '请输入手机号', trigger: 'blur' },
               { validator:checkMobile ,trigger: 'blur' }
           ],
-        }
+        },
+        // 分配角色对话框显示与隐藏
+        setRoleDialogVisible:false,
+        // 拿到当前需要被分配的角色信息
+        infoRule:{},
+        // 获取到所有分配的角色列表
+        ruleList:[],
+        // 已选中的角色id值
+        selectedRoleId:''
         
     }
   },
@@ -221,7 +259,7 @@ export default {
     handleSizeChange(newSize) {
       // console.log(newSize);
       this.queryInfo.pagesize = newSize
-      this.getUserList()
+      this.getUserList() 
     },
     // 监听页码值 拿到最新的页码值 改变的事件
     handleCurrentChange(newPage) {
@@ -233,9 +271,8 @@ export default {
     async switchChange(newSwitch){
       // console.log(newSwitch.mg_state);
     const {data:res} = await this.$http.put(`users/${newSwitch.id}/state/${newSwitch.mg_state}`)
-    // console.log(res);
       if(res.meta.status !== 200){
-            // 返回新的Boolean值给页面，
+          // 返回新的Boolean值给页面，
           newSwitch.mg_state = !newSwitch.mg_state
           return this.$message.error(res.meta.msg)
       }
@@ -251,7 +288,7 @@ export default {
     // addUser 添加用户的一个确定按钮
     addUser() {
       this.$refs.addFormRef.validate(async value=>{
-        if(!value) return
+        if(!value) return 
         // 可以发起添加用户的网络请求
        const {data:res} = await this.$http.post("/users",this.addForm)
        if(res.meta.status !== 201) {
@@ -324,6 +361,37 @@ export default {
        this.$message.success(res.meta.msg)
        // 重新获取用户列表信息 
       this.getUserList()
+    },
+    // 点击分配角色事件
+    async setRole(infoRule) {
+      this.infoRule = infoRule
+
+      const {data:res} = await this.$http.get("roles")
+      if(res.meta.status !== 200 ){
+        return this.$message.error("获取角色列表失败")
+      }
+      this.$message.success("获取角色列表成功")
+      this.ruleList = res.data
+      console.log(this.ruleList);
+      this.setRoleDialogVisible = true
+    },
+    // 点击分配确定按钮时,分配角色
+    async distributionRule() {
+      if(!this.selectedRoleId){
+        return this.$message.error("请选择要分配的角色！")
+      }
+     const {data:res} = await this.$http.put(`users/${this.infoRule.id}/role`,{rid:this.selectedRoleId})
+     if(res.meta.status !== 200 ){
+        return this.$message.error("更新角色失败")
+      }
+      this.$message.success("更新角色成功")
+      this.getUserList()
+      this.setRoleDialogVisible = false
+    },
+    // 点击取消分配按钮，清空
+    distributionClose() {
+      this.selectedRoleId = '',
+      this.infoRule = {}
     }
   }
 }

@@ -33,7 +33,6 @@
           <el-button class="login_btn" type="primary" @click="login">登录</el-button>
           <el-button class="info" @click="refsLoginRorm">重置</el-button>
         </el-form-item>
-
       </el-form>
     </div>
   </div>
@@ -63,6 +62,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$options,"88888");
   },
   methods: {
     // 点击重置按钮   resetFields()方法:对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
@@ -80,6 +80,7 @@ export default {
         if (res.meta.status !== 200) return this.$message.error('登陆失败')
         // $message element-ui组件的内置方法
         this.$message.success('登陆成功')
+        console.log(res.data);
         //  1.将登陆成功之后的token，保存到客户端的 sessionStorage 中
         //     1.1 项目中出了登录之外的其他API接口，必须在登陆之后才能访问
         //     1.2 token 只应在当前网站打开期间生效，所以将token保存在 sessionStorage中

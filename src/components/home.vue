@@ -20,6 +20,9 @@
         <!-- unique-opened  只保持一个子菜单的展开 -->
         <!-- router  为侧边栏开启了路由模式 -->
         <!-- default-active  当前激活菜单的index,可以设置高亮-->
+        <!-- collapse 是否水平折叠收起菜单 -->
+        <!-- collapse-transition 是否开启折叠动画 -->
+        <!-- default-active 激活当前菜单的index-->
         <el-menu
           background-color="#333744"
           text-color="#fff"
@@ -86,6 +89,7 @@ export default {
   created() {
     this.getMenuList(),
     this.activePath = window.sessionStorage.getItem("activePath")
+    // console.log(window.sessionStorage.getItem("activePath"),"小火车");
   },
   methods: {
     loginUp() {
@@ -100,6 +104,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       // 如果状态成功的话，就将获取的到的数据给到menuList数组
       this.menuList = res.data
+      console.log(res.data);
     },
     // 折叠点击事件
     collapseClick() {

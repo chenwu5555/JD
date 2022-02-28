@@ -5,8 +5,17 @@ import login from '@/components/login.vue'
 import Home from '@/components/home.vue'
 // 引入welcome组件
 import welcome from '@/components/welcome.vue'
-// 引入user组件
+// 引入user用户信息组件
 import user from "@/components/user/user.vue"
+// 引入 rights 权限组件
+import rights from "@/components/power/rights.vue"
+// 引入roles 角色列表组件
+import roles from "@/components/power/roles.vue"
+// 引入cate商品分类组件
+import cate from "@/components/goods/cate.vue"
+// 引入params商品分类组件
+import params from "@/components/goods/params.vue"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +45,26 @@ const routes = [
         name:"user",
         component:user
       },
+      {
+        path:"/rights",
+        name:"rights",
+        component:rights
+      },
+      {
+        path:"/roles",
+        name:"roles",
+        component:roles
+      },
+      {
+        path:"/categories",
+        name:"cate",
+        component:cate
+      },
+      {
+        path:"/params",
+        name:"params",
+        component:params
+      }
     ]
   },
 ]

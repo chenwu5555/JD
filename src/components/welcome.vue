@@ -5,7 +5,15 @@
 </template>
 <script>
 export default {
-  name:"welcome"
+  name:"welcome",
+  data () {
+    return {}
+  },
+  methods: {
+  },
+  created () {
+    window.vm = this
+  }
 }
 </script>
 
