@@ -8,7 +8,7 @@
           src="../assets/img/bigUserHeader.png"
           alt=""
         >
-        <span class="header-div-span">黑马后台登录管理</span>
+        <span class="header-div-span">后台登录管理</span>
       </div>
       <el-button type="info" plain @click="loginUp">退出</el-button>
     </el-header>
